@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: __APP_NAME__
+  labels:
+    app: __APP_NAME__
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: __APP_NAME__
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1          
+      maxUnavailable: 0   
+  template:
+    metadata:
+      labels:
+        app: __APP_NAME__
+    spec:
+      containers:
+      - image: gcr.io/toel-342313/__APP_NAME__-__ENV___:latest
+        name: __APP_NAME__
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /ping
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 60
+          successThreshold: 1
+          timeoutSeconds: 10
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /ping
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 60
+          successThreshold: 1
+          timeoutSeconds: 10
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: __APP_NAME__
+spec:
+  type: ClusterIP
+  selector:
+    app: __APP_NAME__
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080

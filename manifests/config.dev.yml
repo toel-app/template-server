@@ -1,0 +1,18 @@
+database:
+  user: 'value'
+  pass: 'value'
+  database_name: 'value'
+  host: 'value'
+  port: 'value'
+
+mysql_dsn: 'value'
+
+otp_code_length: 6
+
+slackWebhookUrl: "value"
+
+twilio:
+  sid: 'value'
+  token: 'value'
+  phoneNumber: 'value'
+  smsTemplate: 'value'
