@@ -1,0 +1,79 @@
+# This workflow will build and deploy a Golang project to a Kubernetes cluster on Google Cloud
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: deploy
+
+env:
+  APP_NAME: registration
+  ENV: dev
+  CLUSTER_NAME: cluster-dev
+  ZONE: asia-southeast2-c
+  GCP_PROJECT_ID: toel-342313
+  WORKLOAD_IDENTITY_PROVIDER: projects/490850757773/locations/global/workloadIdentityPools/github-actions/providers/github-actions-oidc
+  RUNNER_SERVICE_ACCOUNT: github-actions-workflow@toel-342313.iam.gserviceaccount.com
+  DOCKER_REPOSITORY: asia-docker.pkg.dev
+  IMAGE_REPOSITORY: asia.gcr.io
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.RUNNER_SERVICE_ACCOUNT }}
+
+      - name: Login to GAR
+        uses: docker/login-action@v2
+        with:
+          registry: asia-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Configure kubectl
+        run: |
+          gcloud container clusters get-credentials ${{ env.CLUSTER_NAME }} --zone ${{ env.ZONE }} --project ${{ env.GCP_PROJECT_ID }}
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.20.0
+
+      - name: Adjust Name
+        run: |
+          sed -i "s/__APP_NAME__/${{ env.APP_NAME }}/g" ./manifests/application.yaml
+          sed -i "s/__DOCKER_IMAGE_REPOSITORY__/${{ env.DOCKER_REPOSITORY }}/g" ./manifests/application.yaml
+          sed -i "s/__IMAGE_REPOSITORY__/${{ env.IMAGE_REPOSITORY }}/g" ./manifests/application.yaml
+          sed -i "s/__GCP_PROJECT_ID__/${{ env.GCP_PROJECT_ID }}/g" ./manifests/application.yaml
+          sed -i "s/__IMAGE_TAG__/$GITHUB_SHA/g" ./manifests/application.yaml
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t "${{ env.DOCKER_REPOSITORY }}/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_REPOSITORY }}/${{ env.APP_NAME }}:$GITHUB_SHA" .
+          docker push "${{ env.DOCKER_REPOSITORY }}/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_REPOSITORY }}/${{ env.APP_NAME }}:$GITHUB_SHA"
+
+      - name: Deploy
+        run: |
+          gcloud components install kubectl
+          gcloud container clusters get-credentials ${{ env.CLUSTER_NAME }} --zone ${{ env.ZONE }} --project ${{ env.GCP_PROJECT_ID }}
+          kubectl apply -f manifests/application.yaml

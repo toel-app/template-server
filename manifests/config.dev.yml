@@ -1,18 +1,14 @@
 database:
-  user: 'value'
-  pass: 'value'
-  database_name: 'value'
-  host: 'value'
-  port: 'value'
+  user: "changethis"
+  pass: "changethis"
+  name: "changethis"
+  host: "changethis"
+  port: "changethis"
 
-mysql_dsn: 'value'
-
-otp_code_length: 6
-
-slackWebhookUrl: "value"
-
-twilio:
-  sid: 'value'
-  token: 'value'
-  phoneNumber: 'value'
-  smsTemplate: 'value'
+keycloak:
+  host: "changethis"
+  realm: "changethis"
+  adminUser: "changethis"
+  adminPassword: "changethis"
+  clientSecret: "changethis"
+  clientId: "changethis"

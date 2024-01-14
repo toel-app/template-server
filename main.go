@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/toel-app/template-server/src/app"
+	"github.com/toel-app/registration/src/app"
 )
 
 func main() {
-	app.WrapWithGracefulShutdown(app.StartApplication)
+	app.StartApplication()
 }

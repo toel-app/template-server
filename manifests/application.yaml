@@ -5,7 +5,7 @@ metadata:
   labels:
     app: __APP_NAME__
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: __APP_NAME__
@@ -20,7 +20,7 @@ spec:
         app: __APP_NAME__
     spec:
       containers:
-      - image: gcr.io/toel-342313/__APP_NAME__-__ENV___:latest
+      - image: __DOCKER_IMAGE_REPOSITORY__/__GCP_PROJECT_ID__/__IMAGE_REPOSITORY__/__APP_NAME__:__IMAGE_TAG__
         name: __APP_NAME__
         livenessProbe:
           failureThreshold: 3

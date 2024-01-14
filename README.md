@@ -1,1 +1,1 @@
-# template-server
+# registration

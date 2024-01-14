@@ -1,19 +1,24 @@
 package ping
 
 import (
+	"github.com/toel-app/registration/src/pkg/response"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/toel-app/template-server/src/pkg/utils"
 )
 
-func RegisterRoute(r *gin.Engine) {
-	res := resource{}
-	r.GET("/ping", res.ping)
+type Controller interface{}
+
+type controller struct {
 }
 
-type resource struct{}
+func (r controller) ping(c *gin.Context) {
+	c.JSON(http.StatusOK, response.NewOK("pong"))
+}
 
-func (r resource) ping(c *gin.Context) {
-	c.JSON(http.StatusOK, utils.NewOK("pong"))
+func NewController(r *gin.Engine) Controller {
+	res := controller{}
+	r.GET("/ping", res.ping)
+
+	return &res
 }
