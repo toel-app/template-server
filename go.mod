@@ -1,4 +1,4 @@
-module github.com/toel-app/registration
+module github.com/toel-app/template-server
 
 go 1.20
 

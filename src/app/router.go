@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/toel-app/registration/src/pkg/util"
+	"github.com/toel-app/template-server/src/pkg/util"
 	"sync"
 )
 

@@ -4,7 +4,7 @@
 name: deploy
 
 env:
-  APP_NAME: registration
+  APP_NAME: template-server
   ENV: dev
   CLUSTER_NAME: cluster-dev
   ZONE: asia-southeast2-c
@@ -14,13 +14,14 @@ env:
   DOCKER_REPOSITORY: asia-docker.pkg.dev
   IMAGE_REPOSITORY: asia.gcr.io
 
-on:
-  push:
-    branches:
-      - develop
-  pull_request:
-    branches:
-      - develop
+# uncomment this code
+#on:
+#  push:
+#    branches:
+#      - develop
+#  pull_request:
+#    branches:
+#      - develop
 
 jobs:
   deploy:

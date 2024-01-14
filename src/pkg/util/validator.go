@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
-	"github.com/toel-app/registration/src/pkg/logger"
+	"github.com/toel-app/template-server/src/pkg/logger"
 	"net/http"
 )
 

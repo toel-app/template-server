@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/mitchellh/mapstructure"
 	"github.com/spf13/viper"
-	"github.com/toel-app/registration/src/pkg/logger"
+	"github.com/toel-app/template-server/src/pkg/logger"
 
 	"os"
 	"sync"

@@ -1,9 +1,9 @@
 package app
 
 import (
-	"github.com/toel-app/registration/src/internal/ping"
-	"github.com/toel-app/registration/src/pkg/db"
-	log "github.com/toel-app/registration/src/pkg/logger"
+	"github.com/toel-app/template-server/src/internal/ping"
+	"github.com/toel-app/template-server/src/pkg/db"
+	log "github.com/toel-app/template-server/src/pkg/logger"
 	"os"
 	"os/signal"
 	"syscall"

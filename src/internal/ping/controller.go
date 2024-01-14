@@ -1,7 +1,7 @@
 package ping
 
 import (
-	"github.com/toel-app/registration/src/pkg/response"
+	"github.com/toel-app/template-server/src/pkg/response"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

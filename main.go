@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/toel-app/registration/src/app"
+	"github.com/toel-app/template-server/src/app"
 )
 
 func main() {

@@ -3,8 +3,8 @@ package db
 import (
 	"context"
 	"fmt"
-	"github.com/toel-app/registration/src/pkg/config"
-	"github.com/toel-app/registration/src/pkg/logger"
+	"github.com/toel-app/template-server/src/pkg/config"
+	"github.com/toel-app/template-server/src/pkg/logger"
 	"sync"
 	"time"
 
